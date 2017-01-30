@@ -1,4 +1,4 @@
-function [ALPHA, M, S2] =  calc_noise_distribution(grid)
+function [ALPHA, M, S2] =  calc_noise_distribution(grid, half_wid)
 
 ang_step = 1;
 ALPHA = -90:ang_step:90;
@@ -11,7 +11,7 @@ for(i=1:numel(ALPHA))
     fprintf('Rotation angle: %d\n', alpha);
     %fprintf('--------------------\n');
     C = calcprofcurv(grid.grid, grid.de, alpha);
-    [m, s2] = calc_noiselevel(C, grid.de);
+    [m, s2] = calc_noiselevel(C, grid.de, half_wid);
     M = [M; m];
     S2 = [S2; s2];
 end
