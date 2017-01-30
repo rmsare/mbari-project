@@ -21,6 +21,7 @@ idx = find(isnan(dem.grid));
 %dem.grid(idx) = dem.nodata;
 dem.grid(idx) = -9999;
 dem.nodata = -9999;
+dem.grid = flipud(dem.grid);
 
 for(i = 1:1:dem.ny)
     fprintf(fid, '%f ', dem.grid(i,:));
