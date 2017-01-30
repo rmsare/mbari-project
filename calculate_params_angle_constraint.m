@@ -46,9 +46,7 @@ for(i=1:nfiles)
     
     label = strcat(grid_name, '_clipped_');
     saverun(dem, nanidx, d, angle, output_dir, label);
-    angle.grid = flipud(angle.grid);
     mat2dem(angle, strcat(angle_fn(1:end-4), '_clipped.asc'));
-    dem.grid = flipud(dem.grid);
     mat2dem(dem, strcat(dem_fn(1:end-4), '_clipped.asc'));
 
 end
