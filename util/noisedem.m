@@ -22,9 +22,20 @@ end
 
 noisegrid = randn(dem.ny,dem.nx)*sig2 + meanval;
 
-idx = find(isnan(dem.grid));
+idx = find(isnan(dem.grid))';
 fprintf('DEM contains %i NaNs, (%3.2f %%)\n', length(idx), length(idx)/prod(size(dem.grid))*100);
-dem.grid(idx) = noisegrid(idx);
+%dem.grid(idx) = noisegrid(idx);
+r = 10;
+for(s=idx)
+    [i, j] = ind2sub(size(dem.grid), s);
+    ni =  i-r:i+r;
+    nj = j-r:j+r;
+    ni = ni(ni > 0 & ni <= dem.ny);
+    nj = nj(nj > 0 & nj <= dem.nx);
+    [NI, NJ] = meshgrid(ni, nj);
+    ns = sub2ind(size(dem.grid), NI(:), NJ(:));
+    dem.grid(s) = nanmean(dem.grid(ns));
+end
 
 noisedem = dem;
 nanidx = idx;
