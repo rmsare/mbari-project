@@ -32,19 +32,23 @@ for(i=1:nfiles)
             break;
         end
     end
-    angle_fn = strcat(angle_dir, angle_files(i).name);
+    angle_fn = strcat(angle_dir, angle_files(j).name);
     fprintf(strcat(angle_fn,'\n'))
     
     dem = dem2mat(dem_fn);
-    dem.grid = flipud(dem.grid);
 
     angle = dem2mat(angle_fn);
     angle.grid(angle.grid <= -9999) = angle.nodata;
 
     [dem, angle] = clip_to_grid_extent(dem, angle);
     [dem, nanidx] = noisedem(dem);
+    num_nans = sum(isnan(dem.grid(:)));
+    while(num_nans > 0)
+        dem = noisedem(dem);
+        num_nans = sum(isnan(dem.grid(:)));
+    end
     
-    label = strcat(grid_name, '_clipped_');
+    label = strcat(grid_name, '_noised_clipped_');
     saverun(dem, nanidx, d, angle, output_dir, label);
     mat2dem(angle, strcat(angle_fn(1:end-4), '_clipped.asc'));
     mat2dem(dem, strcat(dem_fn(1:end-4), '_clipped.asc'));
