@@ -17,15 +17,16 @@ fprintf('DEM contains %i NaNs, (%3.2f %%)\n', length(idx), length(idx)/prod(size
 
 if(nargin < 2)
     r = 10;
-    for(s=idx)
-        [i, j] = ind2sub(size(dem.grid), s);
+    for(k=1:numel(idx))
+        s = idx(k);
+        [i, j] = ind2sub([dem.ny, dem.nx], s);
         ni =  i-r:i+r;
         nj = j-r:j+r;
         ni = ni(ni > 0 & ni <= dem.ny);
         nj = nj(nj > 0 & nj <= dem.nx);
-        [NI, NJ] = meshgrid(ni, nj);
-        ns = sub2ind(size(dem.grid), NI(:), NJ(:));
-        dem.grid(s) = nanmean(dem.grid(ns));
+        %[NI, NJ] = meshgrid(ni, nj);
+        %ns = sub2ind(size(dem.grid), NI(:), NJ(:));
+        dem.grid(s) = nanmean(nanmean(dem.grid(ni, nj)));
     end
 else
     tot = sum(nansum(dem.grid));
@@ -37,5 +38,7 @@ else
     noisegrid = randn(dem.ny,dem.nx)*sig2 + meanval;
     dem.grid(idx) = noisegrid(idx);
 end
+
+dem = computeslopeaz(dem);
 
 end
