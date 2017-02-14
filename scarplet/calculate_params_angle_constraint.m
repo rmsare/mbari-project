@@ -26,31 +26,38 @@ for(i=1:nfiles)
     grid_name = dem_files(i).name(1:6);
 
     angle_fn = '';
+    k = 0;
     for(j=1:numel(angle_files))
-        angle_fn = angle_files(i).name;
-        if(numel(strfind(grid_name, angle_fn)) > 0)
-            break;
+        angle_fn = angle_files(j).name;
+        if(numel(strfind(angle_fn, grid_name)) > 0)
+            k = j;
         end
     end
-    angle_fn = strcat(angle_dir, angle_files(j).name);
-    fprintf(strcat(angle_fn,'\n'))
-    
-    dem = dem2mat(dem_fn);
 
-    angle = dem2mat(angle_fn);
-    angle.grid(angle.grid <= -9999) = angle.nodata;
+    if(k>0)
+        angle_fn = strcat(angle_dir, angle_files(k).name);
+        fprintf(strcat(dem_fn,'\n'))
+        fprintf(strcat(angle_fn,'\n'))
+        
+        dem = dem2mat(dem_fn);
 
-    [dem, angle] = clip_to_grid_extent(dem, angle);
-    [dem, nanidx] = noisedem(dem);
-    num_nans = sum(isnan(dem.grid(:)));
-    while(num_nans > 0)
-        dem = noisedem(dem);
+        angle = dem2mat(angle_fn);
+        angle.grid(angle.grid <= -9999) = angle.nodata;
+
+        [dem, angle] = clip_to_grid_extent(dem, angle);
+        [dem, nanidx] = noisedem(dem);
         num_nans = sum(isnan(dem.grid(:)));
+        while(num_nans > 0)
+            dem = noisedem(dem);
+            num_nans = sum(isnan(dem.grid(:)));
+        end
+        
+        label = strcat(grid_name, '_noised_clipped_');
+        saverun(dem, nanidx, d, angle, output_dir, label);
+        mat2dem(angle, strcat(angle_fn(1:end-4), '_clipped.asc'));
+        mat2dem(dem, strcat(dem_fn(1:end-4), '_clipped.asc'));
+    else
+        fprintf(strcat(['No feature orientations matching ', dem_fn, ' \n']));
     end
-    
-    label = strcat(grid_name, '_noised_clipped_');
-    saverun(dem, nanidx, d, angle, output_dir, label);
-    mat2dem(angle, strcat(angle_fn(1:end-4), '_clipped.asc'));
-    mat2dem(dem, strcat(dem_fn(1:end-4), '_clipped.asc'));
 
 end
