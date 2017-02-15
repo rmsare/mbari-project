@@ -40,6 +40,7 @@ for(i=1:nfiles)
         fprintf(strcat(angle_fn,'\n'))
         
         dem = dem2mat(dem_fn);
+        dem.grid(dem.grid <= -9999) = dem.nodata;
 
         angle = dem2mat(angle_fn);
         angle.grid(angle.grid <= -9999) = angle.nodata;
