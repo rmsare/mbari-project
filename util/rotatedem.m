@@ -24,7 +24,7 @@ if(nargin < 2)
     end
 
     v = [1; 0];
-    theta = acos(dot(u, v)./(norm(v)*norm(u)));
+    theta = acos(dot(u, v)./(norm(v)*norm(u)))
 end
 
 [m, n] = size(dem.grid);
