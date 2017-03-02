@@ -10,8 +10,8 @@ u2 = endpts(2,:)';
 if(nargin < 4)
     u = u2 - u1;
     swathradius = 5;
-    axislength = norm(u, 2)
-    nlines = floor(axislength/(2*swathradius));
+    axislength = norm(u, 2);
+    nlines = floor(axislength/(2*swathradius))
     [L, dl] = profilelines(u1, u2, radius, nlines);
 elseif(nargin < 5)
     [L, dl] = profilelines(u1, u2, radius, nlines);

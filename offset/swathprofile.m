@@ -16,6 +16,8 @@ end
 
 [lx, ly] = profileline(endpts, dx);
 len = [0 cumsum(sqrt((lx(2:end)-lx(1:end-1)).^2 + (ly(2:end)-ly(1:end-1)).^2))];
+swath.lx = lx;
+swath.ly = ly;
 
 x = (0:dem.nx-1)*dem.de + dem.xllcenter;
 y = (0:dem.ny-1)*dem.de + dem.yllcenter;
