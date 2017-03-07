@@ -20,6 +20,8 @@ if(peak == 1 | peak == length(zfan) | trough == 1 | trough == length(zscar))
     offset = nan;
 else
     offset = abs(xfan(peak) - xscar(trough));
+    plot(swath1.lx(peak), swath1.ly(peak), 'r.', 'markersize', 5)
+    plot(swath2.lx(trough), swath2.ly(trough), 'r.', 'markersize', 5)
 end
 
 end
