@@ -1,6 +1,6 @@
 function saverun(dem, nanidx, d, anggrid, working_dir, label)
 
-[A, KT, ANG, SNR] = wavelet_filtertile_angular_constraint(dem, d, 3.5, 0.1, anggrid, nanidx);
+[A, KT, ANG, SNR] = wavelet_filtertile_angular_constraint(dem, d, 3.5, 0.1, anggrid, 1, nanidx);
 
 dem.grid(nanidx) = dem.nodata;
 A.grid(nanidx) = nan;
