@@ -1,4 +1,4 @@
-function [A, KT, ANG, SNR] = wavelet_filtertile_angular_constraint(dem, d, logkt_max, kt_step, anggrid, nanidx)
+function [A, KT, ANG, SNR] = wavelet_filtertile_angular_constraint(dem, d, logkt_max, kt_step, anggrid, ang_tolerance, nanidx)
 
 %% 
 %%
@@ -47,7 +47,7 @@ angles = round(anggrid.grid(grididxs));
 
 ALPHA = [];
 for(i=1:numel(angles))
-    ALPHA = [ALPHA angles(i)-1:angles(i)+1];
+    ALPHA = [ALPHA angles(i)-ang_tolerance:angles(i)+ang_tolerance];
 end
 ALPHA = unique(ALPHA);
 
